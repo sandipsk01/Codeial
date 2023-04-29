@@ -3,3 +3,23 @@ module.exports.profile=function(req,res){
         title:"Profile Page"
     }); 
 }
+
+//render the sign up page
+module.exports.signUp=function(req, res){
+    return res.render('user_sign_up',{
+        title:"Codeial | Sign Up"
+    })
+}
+
+
+//render thr sign in page
+module.exports.signIn=function(req,res){
+    return res.render('user_sign_up',{
+        title:"Codeial | Sign In"
+    })
+}
+
+//get the sign up data
+module.exports.create=function(req,res){
+    //TODO later
+}
