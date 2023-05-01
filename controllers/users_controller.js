@@ -45,19 +45,22 @@ module.exports.create=function(req,res){
         return res.redirect('back')
     }
 
-    User.findOne({email:req.body.email},function(err,user){
-        if(err){console.log('error in finding user in signing up'); return}
+    User.findOne({ email: req.body.email })
+  .then((user) => {
+    if (!user) {
+      return User.create(req.body);
+    } else {
+      throw new Error('User already exists');
+    }
+  })
+  .then((user) => {
+    return res.redirect('/users/sign-in');
+  })
+  .catch((err) => {
+    console.log('Error: ', err);
+    return res.redirect('back');
+  });
 
-        if(!user){
-            User.create(req.body, function(err, user){
-                if(err){console.log('error in creating user while signing up'); return}
-
-                return res.redirect('/users/sign-in');
-            })
-        }else{
-            return res.redirect('back')
-        }
-    });
 }
 
 module.exports.createSession=function(req,res){
