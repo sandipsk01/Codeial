@@ -34,7 +34,7 @@ module.exports.create=function(req,res){
             User.create(req.body, function(err, user){
                 if(err){console.log('error in creating user while signing up'); return};
 
-                return res.redirect('/user/sign-in');
+                return res.redirect('/users/sign-in');
             })
         }else{
             return res.redirect('back')
