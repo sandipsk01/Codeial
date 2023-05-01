@@ -1,20 +1,26 @@
 const User=require('../models/user');
 
 module.exports.profile=function(req,res){
-    if(req.cookies.user_id){
-        User.findById(req.cookies.user_id, function(err,user){
-            if(user){
-                return res.render('user_profile',{
-                    title:"Profile Page",
-                    user:user
-                }); 
-            }else{
-            return res.redirect('/users/sign-in')
+    if (req.cookies.user_id) {
+        User.findById(req.cookies.user_id)
+          .then((user) => {
+            if (user) {
+              return res.render('user_profile', {
+                title: "Profile Page",
+                user: user
+              });
+            } else {
+              throw new Error('User not found');
             }
-        });
-    }else{
+          })
+          .catch((err) => {
+            console.log('Error: ', err);
+            return res.redirect('/users/sign-in');
+          });
+      } else {
         return res.redirect('/users/sign-in');
-    }
+      }
+      
     
 }
 
@@ -57,21 +63,22 @@ module.exports.create=function(req,res){
 module.exports.createSession=function(req,res){
     //Steps to authenticate
     //find the user
-    User.findOne({email:req.body.email},function(err,user){
-        if(err){console.log('error in finding user in signing in'); return}
-        //handle user found
-        if(user){
-            //handle password which doesn't match
-            if(user.password!=req.body.password){
-                return res.redirect('back');
-            }
-            //handle session creation
-            res.cookie('user_id',user.id);
-            return res.redirect('/users/profile')
-        }else{
-            //handle user not found
-            return res.redirect('back');
-        }
-    });
+    User.findOne({ email: req.body.email })
+  .then((user) => {
+    if (user) {
+      if (user.password === req.body.password) {
+        res.cookie('user_id', user.id);
+        return res.redirect('/users/profile');
+      } else {
+        throw new Error('Password does not match');
+      }
+    } else {
+      throw new Error('User not found');
+    }
+  })
+  .catch((err) => {
+    console.log('Error: ', err);
+    return res.redirect('back');
+  });
     
 }
