@@ -64,24 +64,25 @@ module.exports.create=function(req,res){
 }
 
 module.exports.createSession=function(req,res){
-    //Steps to authenticate
-    //find the user
-    User.findOne({ email: req.body.email })
-  .then((user) => {
-    if (user) {
-      if (user.password === req.body.password) {
-        res.cookie('user_id', user.id);
-        return res.redirect('/users/profile');
-      } else {
-        throw new Error('Password does not match');
-      }
-    } else {
-      throw new Error('User not found');
-    }
-  })
-  .catch((err) => {
-    console.log('Error: ', err);
-    return res.redirect('back');
-  });
+  //   //Steps to authenticate
+  //   //find the user
+  //   User.findOne({ email: req.body.email })
+  // .then((user) => {
+  //   if (user) {
+  //     if (user.password === req.body.password) {
+  //       res.cookie('user_id', user.id);
+  //       return res.redirect('/users/profile');
+  //     } else {
+  //       throw new Error('Password does not match');
+  //     }
+  //   } else {
+  //     throw new Error('User not found');
+  //   }
+  // })
+  // .catch((err) => {
+  //   console.log('Error: ', err);
+  //   return res.redirect('back');
+  // });
     
+  return res.redirect('/')
 }
