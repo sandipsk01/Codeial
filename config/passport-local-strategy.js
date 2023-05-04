@@ -27,7 +27,7 @@ passport.use(new LocalStrategy({
         // });  
         User.findOne({ email: email })
         .then((user) => {
-            if (!user || user.password !== password) {
+            if (!user || user.password != password) {
                 console.log('Invalid Username/Password');
                 return done(null,false);
             }
@@ -62,13 +62,6 @@ passport.deserializeUser(function(id, done){
     //     return done(null, user);
     // });
     User.findById(id)
-    .then((user) => {
-        if (!user) {
-            console.log('User not found');
-            return Promise.reject(null);
-        }
-        return Promise.resolve(user);
-    })
     .then((user) => {
         return done(null, user);
     })
