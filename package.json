@@ -17,7 +17,11 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
     "mongoose": "^7.1.0",
+    "node-sass-middleware":"",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "node-sass": "^8.0.0"
   }
 }
