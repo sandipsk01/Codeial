@@ -1,7 +1,7 @@
 const Comment=require('../models/comment');
 const Post = require('../models/post');
 
-// module.exports.create=function(req, res){
+module.exports.create=function(req, res){
     //name of input is post
     // Post.findById(req.body.post,function(err,post){
     //     if(post){
@@ -17,55 +17,26 @@ const Post = require('../models/post');
     //             res.redirect('/');
     //         });
     //     }
-    // }); 
-// }
-
-
-// module.exports.create=function(req, res){
-//     Post.findById(req.body.post)
-//         .then((post)=>{
-//             Comment.create({
-//                 content: req.body.content,
-//                 post: req.body.post,
-//                 user: req.user._id
-//             })
-//             .then((comment)=>{
-//                 //handle error
-//                 post.comments.push(comment);
-//                 post.save();
-    
-//                 res.redirect('/');
-//             });            
-//     })     
-// }
-
-module.exports.create = async function(req, res){
-
-    try{
-        let post = await Post.findById(req.body.post);
-
-        if (post){
-            let comment = await Comment.create({
+    // });  
+    Post.findById(req.body.post)
+        .then((post)=>{
+            Comment.create({
                 content: req.body.content,
                 post: req.body.post,
                 user: req.user._id
-            });
-
-            post.comments.push(comment);
-            post.save();
-            req.flash('success', 'Comment published!');
-
-            res.redirect('/');
-        }
-    }catch(err){
-        req.flash('error', err);
-        return;
-    }
+            })
+            .then((comment)=>{
+                //handle error
+                post.comments.push(comment);
+                post.save();
     
+                res.redirect('/');
+            });            
+    })     
 }
 
 
-// module.exports.destroy = function(req, res){
+module.exports.destroy = function(req, res){
     // Comment.findById(req.params.id, function(err, comment){
     //     if(comment.user==req.user.id){
     //         let postId=comment.post;
@@ -77,51 +48,22 @@ module.exports.create = async function(req, res){
     //         return res.redirect('/');
     //     }
     // });
-// }
-
-
-// module.exports.destroy = function(req, res){   
-//     Comment.findById(req.params.id)
-//     .then((comment)=>{
-//         if(comment.user==req.user.id){
-//             let postId=comment.post;
-//             comment.deleteOne();
-//             Post.findByIdAndUpdate(postId,{$pull:{comments: req.params.id}})
-//             .then((post)=>{
-//                 return res.redirect('/');
-//             })
-//             .catch((err)=>{
-//                 return res.redirect('/');
-//             })
-//         }
-//     })
-//     .catch((err)=>{
-//             return res.redirect('/');
-//      });
-// }
-
-module.exports.destroy = async function(req, res){
-
-    try{
-        let comment = await Comment.findById(req.params.id);
-
-        if (comment.user == req.user.id){
-
-            let postId = comment.post;
-
-            comment.remove();
-
-            let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
-            req.flash('success', 'Comment deleted!');
-
-            return res.redirect('back');
-        }else{
-            req.flash('error', 'Unauthorized');
-            return res.redirect('back');
-        }
-    }catch(err){
-        req.flash('error', err);
-        return;
-    }
     
+    Comment.findById(req.params.id)
+    .then((comment)=>{
+        if(comment.user==req.user.id){
+            let postId=comment.post;
+            comment.deleteOne();
+            Post.findByIdAndUpdate(postId,{$pull:{comments: req.params.id}})
+            .then((post)=>{
+                return res.redirect('/');
+            })
+            .catch((err)=>{
+                return res.redirect('/');
+            })
+        }
+    })
+    .catch((err)=>{
+            return res.redirect('/');
+     });
 }

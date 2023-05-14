@@ -1,6 +1,5 @@
 const User=require('../models/user');
-const fs= require('fs');
-const path=require('path');
+
 module.exports.profile=function(req,res){
   User.findById(req.params.id)
   .then((user)=>{
@@ -12,45 +11,13 @@ module.exports.profile=function(req,res){
 }
 
 
-// module.exports.update=function(req,res){
-//   if(req.user.id == req.params.id){
-//     User.findByIdAndUpdate(req.params.id, req.body)
-//     .then((user)=>{
-//       return res.redirect('back');
-//     });
-//   }else{
-//     return res.status(401).send('Unauthorized');
-//   }
-// }
-
-module.exports.update= async function(req,res){
+module.exports.update=function(req,res){
   if(req.user.id == req.params.id){
-    try {
-      let user=await User.findByIdAndUpdate(req.params.id);
-      User.uploadedAvatar(req,res,function(err){
-        if(err){console.log('Multer Error: ',err)}
-        user.name=req.body.name;
-        user.email=req.body.email;
-        
-        if(req.file){
-
-          if(user.avatar){
-            fs.unlinkSync(path.join(__dirname,'..',user.avatar));
-          }
-
-
-          //this is just saving the path of  the uploaded file into the user
-          user.avatar= User.avatarPath+'/'+req.file.filename;
-        }
-        user.save();
-        return res.redirect('back');
-      });
-    } catch (err) {
-      req.flash('error',err);
+    User.findByIdAndUpdate(req.params.id, req.body)
+    .then((user)=>{
       return res.redirect('back');
-    }
+    });
   }else{
-    req.flash('error','Unauthorized');
     return res.status(401).send('Unauthorized');
   }
 }
