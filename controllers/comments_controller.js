@@ -1,6 +1,6 @@
 const Comment=require('../models/comment');
 const Post = require('../models/post');
-const commentsMailer = require('../mailers/comments_mailer');
+
 // module.exports.create=function(req, res){
     //name of input is post
     // Post.findById(req.body.post,function(err,post){
@@ -54,14 +54,15 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
-            comment = await comment.populate('user', 'name email').execPopulate();
-
-            commentsMailer.newComment(comment);
-
             if (req.xhr){
                 // Similar for comments to fetch the user's id!
+<<<<<<< HEAD
                 
                 console.log('in xhr');
+=======
+                comment = await comment.populate('user', 'name').execPopulate();
+    
+>>>>>>> parent of fac3bbb (Node mailer / SMTP)
                 return res.status(200).json({
                     data: {
                         comment: comment
