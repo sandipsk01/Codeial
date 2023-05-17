@@ -61,7 +61,7 @@ module.exports.create = async function(req, res){
             if (req.xhr){
                 // Similar for comments to fetch the user's id!
                 
-    
+                console.log('in xhr');
                 return res.status(200).json({
                     data: {
                         comment: comment
@@ -69,10 +69,10 @@ module.exports.create = async function(req, res){
                     message: "Post created!"
                 });
             }
-
+            
             req.flash('success', 'Comment published!');
 
-            res.redirect('/');
+            return res.redirect('back');
         }
     }catch(err){
         req.flash('error', err);
