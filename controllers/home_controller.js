@@ -1,5 +1,4 @@
 const Post = require('../models/post');
-// const { populate } = require('../models/user');
 const User = require('../models/user');
 module.exports.home=async function(req, res){
     // console.log(req.cookies);
