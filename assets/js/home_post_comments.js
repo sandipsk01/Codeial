@@ -44,8 +44,7 @@ class PostComments{
                         timeout: 1500
                         
                     }).show();
-                    // Redirect to the current page after comment creation
-                    // window.location.href = window.location.href;
+                    
                 }, error: function(error){
                     console.log(error.responseText);
                 }
@@ -95,7 +94,7 @@ class PostComments{
                         
                     }).show();
                     // Redirect to the current page after comment creation
-                    window.location.href = window.location.href;
+                    // window.location.href = window.location.href;
                 },error: function(error){
                     console.log(error.responseText);
                 }
