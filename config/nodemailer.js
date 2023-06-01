@@ -9,8 +9,8 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: 'sandipkalekar808',
-        pass: ''  //add gmail password
+        user: 'sandipkalekar808@gmail.com',
+        pass: ''  //add gmail password-- Google account- security-> 2-step verification -> app passwords -> Mail on my Windows Computer
     }
 });
 
